@@ -1,1 +1,67 @@
+#include <iostream>
+#include <vector>
+using namespace std;
 
+const int N_MAX = 10; // Adjust as needed
+
+bool isSafe(int board[N_MAX][N_MAX], int row, int col, int N) {
+    // Check the left side of this row
+    for (int i = 0; i < col; ++i)
+        if (board[row][i])
+            return false;
+
+    // Check upper diagonal on left side
+    for (int i = row, j = col; i >= 0 && j >= 0; --i, --j)
+        if (board[i][j])
+            return false;
+
+    // Check lower diagonal on left side
+    for (int i = row, j = col; j >= 0 && i < N; ++i, --j)
+        if (board[i][j])
+            return false;
+
+    return true;
+}
+
+bool placeQueens(int board[N_MAX][N_MAX], int col, int N) {
+    if (col >= N)
+        return true; // All queens are placed
+
+    for (int i = 0; i < N; ++i) {
+        if (isSafe(board, i, col, N)) {
+            board[i][col] = 1; // Place queen at board[i][col]
+
+            if (placeQueens(board, col + 1, N))
+                return true; // Recursively place queens in next columns
+
+            board[i][col] = 0; // Backtrack: Remove queen if placement doesn't lead to a solution
+        }
+    }
+
+    return false; // Could not place queen in any row of this column
+}
+
+void printBoard(int board[N_MAX][N_MAX], int N) {
+    for (int i = 0; i < N; ++i) {
+        for (int j = 0; j < N; ++j)
+            cout << board[i][j] << " ";
+        cout << endl;
+    }
+}
+
+int main() {
+    int N;
+    cout << "Enter the number of queens (N): ";
+    cin >> N;
+
+    int board[N_MAX][N_MAX] = {0};
+
+    if (!placeQueens(board, 0, N))
+        cout << "Solution does not exist";
+    else {
+        cout << "Queens placed successfully:\n";
+        printBoard(board, N);
+    }
+
+    return 0;
+}
