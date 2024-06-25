@@ -1,0 +1,11 @@
+//Basic Greedy Approach
+
+Algorithim Greedy(a, n)
+{
+    for(i=1 to n)
+    {
+        x=select(a);
+        if Feasible(x) then 
+        solution=solution+x;
+    }
+}
