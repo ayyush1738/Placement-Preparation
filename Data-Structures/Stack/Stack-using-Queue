@@ -1,0 +1,60 @@
+#include <iostream>
+#include <queue> // Include for std::queue
+
+using namespace std;
+
+class Stack {
+    queue<int> q;
+public:
+    void Push(int x) {
+        int s = q.size();
+        q.push(x);
+        for (int i = 0; i < s; i++) {
+            q.push(q.front());
+            q.pop();
+        }
+    }
+    
+    int Pop() {
+        int n = q.front();
+        q.pop();
+        return n;
+    }
+    
+    int Top() {
+        return q.front();
+    }
+    
+    int Size() {
+        return q.size();
+    }
+    
+    void Display() {
+        queue<int> temp = q; // Create a temporary queue to maintain original data
+        while (!temp.empty()) {
+            cout << temp.front() << " ";
+            temp.pop();
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    Stack s;
+    s.Push(10);
+    s.Push(20);
+    s.Push(30);
+    s.Push(40);
+    
+    s.Display(); // Corrected to call Display() on object s
+    
+    s.Pop();
+    s.Display();
+    s.Push(40);
+    cout<<"Top of stack: "<<s.Top()<<endl;
+    cout<<"Size of the stack before removing element: "<<s.Size()<<endl;
+    cout<<"The deleted element is: "<<s.Pop()<<endl;
+    cout<<"Top of the stack after removing element: "<<s.Top()<<endl;
+    cout<<"Size of the stack after removing the element: "<<s.Size()<<endl;
+    return 0;
+}
