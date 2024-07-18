@@ -1,0 +1,63 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+
+using namespace std;
+
+int isOperand(char x) {
+    if (x == '+' || x == '-' || x == '*' || x == '/') {
+        return 0;
+    } else {
+        return 1;
+    }
+}
+
+int pre(char x) {
+    if (x == '+' || x == '-') {
+        return 1;
+    } else if (x == '*' || x == '/') {
+        return 2;
+    }
+    return 0;
+}
+
+vector<char> convert(vector<char>& infix, vector<char>& postfix, stack<char>& st) {
+    int i = 0, j = 0;
+    while (infix[i] != '\0') {
+        if (isOperand(infix[i])) {
+            postfix[j++] = infix[i++];
+        } else {
+            if (st.empty() || pre(infix[i]) > pre(st.top())) {
+                st.push(infix[i++]);
+            } else {
+                postfix[j++] = st.top();
+                st.pop();
+            }
+        }
+    }
+    while (!st.empty()) {
+        postfix[j++] = st.top();
+        st.pop();
+    }
+    postfix[j] = '\0'; // Null terminate the postfix expression
+    return postfix;
+}
+
+int main() {
+    vector<char> infix = {'a','+','b','*','c','-','d','/','e','\0'};
+    stack<char> st;
+    vector<char> postfix(infix.size() + 1);
+
+    postfix = convert(infix, postfix, st);
+
+    // Print the postfix expression
+    cout << "Postfix Expression: ";
+    for (char ch : postfix) {
+        if (ch != '\0') {
+            cout << ch << " ";
+        }
+    }
+    cout << endl;
+
+    return 0;
+}

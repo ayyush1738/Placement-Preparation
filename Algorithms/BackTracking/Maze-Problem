@@ -1,0 +1,89 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+const int N = 4; // Adjusted to match the matrix size
+
+// Function declarations
+int solve(int m[N][N]);
+int guide(int m[N][N], int x, int y, int path[N][N]);
+int valid(int m[N][N], int x, int y);
+
+// Function to solve the maze
+int solve(int m[N][N])
+{
+    int path[N][N] = {
+        {0, 0, 0, 0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0}
+    };
+    
+    if(guide(m, 0, 0, path) == 0)
+    {
+        cout << "Solution doesn't exist" << endl;
+        return 0;
+    }
+    
+    // Display the path
+    for(int i = 0; i < N; ++i)
+    {
+        for(int j = 0; j < N; ++j)
+        {
+            cout << path[i][j] << " ";
+        }
+        cout << endl;
+    }
+    return 1;
+}
+
+// Function to recursively find the path
+int guide(int m[N][N], int x, int y, int path[N][N])
+{
+    if(x == N-1 && y == N-1)
+    {
+        path[x][y] = 1;
+        return 1;
+    }
+    
+    if(valid(m, x, y))
+    {
+        path[x][y] = 1;
+        if(guide(m, x+1, y, path) == 1)
+        {
+            return 1;
+        }
+        if(guide(m, x, y+1, path) == 1)
+        {
+            return 1;
+        }
+        path[x][y] = 0;
+    }
+    return 0;
+}
+
+// Function to check if the cell is valid to move
+int valid(int m[N][N], int x, int y)
+{
+    if(x >= 0 && x < N && y >= 0 && y < N && m[x][y] == 1)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+// Main function
+int main()
+{
+    int m[N][N] = {
+        {1, 0, 0, 0},
+        {1, 1, 0, 1},
+        {1, 1, 0, 0},
+        {0, 1, 1, 1}
+    };
+    
+    solve(m);
+    
+    return 0;
+}
+
